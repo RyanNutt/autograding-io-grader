@@ -195,44 +195,8 @@ function run() {
     }
 
     console.log(result)
+    core.setOutput('result', btoa(JSON.stringify(result)))
 
-    if (inputs.outputFormat.toLowerCase() === 'text') {
-      let resultOutput = 'Submission Results:\n\n';
-
-      result.tests.forEach((test) => {
-        resultOutput += `Test: ${test.name}\n`
-        resultOutput += `Status: `
-        if (test.status === 'error') {
-          resultOutput += '💥 Error\n\n'
-        } else if (test.status === 'fail') {
-          resultOutput += '❌ Fail\n\n'
-        } else if (test.status === 'pass') {
-          resultOutput += '👍 Pass\n\n'
-        }
-
-        resultOutput += 'Execution Time: ' + test.execution_time + '\n'
-        resultOutput += 'Points: ' + test.score + '\n'
-
-        resultOutput += '\n\n';
-
-        if (test.status === 'error') {
-          resultOutput += 'Error Message: \n' + test.message + '\n\n'
-        } else if (test.status === 'fail') {
-          resultOutput += 'Expected Output: \n----------------\n' + test.runResults.expected + '\n\n'
-          resultOutput += 'Actual Output: \n--------------\n' + test.runResults.actual + '\n\n'
-
-        } else if (test.status === 'pass') {
-          resultOutput += 'Output: \n----\n' + test.runResults.actual + '\n\n'
-        } else {
-          resultOutput += 'Unknown status: ' + test.status + '\n\n'
-        }
-
-      })
-
-      core.setOutput('result', resultOutput)
-    } else {
-      core.setOutput('result', btoa(JSON.stringify(result)))
-    }
 
   } catch (error) {
     const result = {
@@ -250,44 +214,8 @@ function run() {
         },
       ],
     }
+    core.setOutput('result', btoa(JSON.stringify(result)))
 
-    if (inputs.outputFormat.toLowerCase() === 'text') {
-      let resultOutput = 'Submission Results:\n\n';
-
-      result.tests.forEach((test) => {
-        resultOutput += `Test: ${test.name}\n`
-        resultOutput += `Status: `
-        if (test.status === 'error') {
-          resultOutput += '💥 Error\n\n'
-        } else if (test.status === 'fail') {
-          resultOutput += '❌ Fail\n\n'
-        } else if (test.status === 'pass') {
-          resultOutput += '👍 Pass\n\n'
-        }
-
-        resultOutput += 'Execution Time: ' + test.execution_time + '\n'
-        resultOutput += 'Points: ' + test.score + '\n'
-
-        resultOutput += '\n\n';
-
-        if (test.status === 'error') {
-          resultOutput += 'Error Message: \n' + test.message + '\n\n'
-        } else if (test.status === 'fail') {
-          resultOutput += 'Expected Output: \n----------------\n' + test.runResults.expected + '\n\n'
-          resultOutput += 'Actual Output: \n--------------\n' + test.runResults.actual + '\n\n'
-
-        } else if (test.status === 'pass') {
-          resultOutput += 'Output: \n----\n' + test.runResults.actual + '\n\n'
-        } else {
-          resultOutput += 'Unknown status: ' + test.status + '\n\n'
-        }
-
-      })
-
-      core.setOutput('result', resultOutput)
-    } else {
-      core.setOutput('result', btoa(JSON.stringify(result)))
-    }
   }
 }
 
