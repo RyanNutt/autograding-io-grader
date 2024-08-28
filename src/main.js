@@ -155,14 +155,21 @@ function run() {
     let message = null
     let score = inputs.maxScore
 
+    let runResults = {
+      expected: inputs.expectedOutput,
+      actual: null,
+    }
+
     if (error) {
       status = 'error'
       message = error
       score = 0
+      runResults.actual = ''
     } else if (!compareOutput(output, inputs.expectedOutput, inputs.comparisonMethod)) {
       status = 'fail'
       message = `Output does not match expected: ${inputs.expectedOutput} Got: ${output}`
       score = 0
+      runResults.actual = output
     }
 
     const result = {
@@ -179,6 +186,7 @@ function run() {
           line_no: 0,
           execution_time: `${(endTime - startTime) / 1000}s`,
           score,
+          runResults,
         },
       ],
     }
@@ -202,7 +210,43 @@ function run() {
       ],
     }
 
-    core.setOutput('result', btoa(JSON.stringify(result)))
+    if (core.getInput('output-format').toLowerCase() === 'text') {
+      let resultOuput = 'Submission Results:\n\n';
+
+      result.tests.forEach((test) => {
+        resultOuput += `Test: ${test.name}\n`
+        resultOuput += `Status: `
+        if (test.status === 'error') {
+          resultOuput += '💥 Error\n\n'
+        } else if (test.status === 'fail') {
+          resultOuput += '❌ Fail\n\n'
+        } else if (test.status === 'pass') {
+          resultOuput += '👍 Pass\n\n'
+        }
+
+        resultOutput += 'Execution Time: ' + test.execution_time + '\n'
+        resultOutput += 'Points: ' + test.score + '\n'
+
+        resultOutput += '\n\n';
+
+        if (test.status === 'error') {
+          resultOutput += 'Error Message: \n' + test.message + '\n\n'
+        } else if (test.status === 'fail') {
+          resultOutput += 'Expected Output: \n----------------\n' + test.runResults.expected + '\n\n'
+          resultOutput += 'Actual Output: \n--------------\n' + test.runResults.actual + '\n\n'
+
+        } else if (test.status === 'pass') {
+          resultOutput += 'Output: \n----\n' + test.runResults.actual + '\n\n'
+        } else {
+          resultOutput += 'Unknown status: ' + test.status + '\n\n'
+        }
+
+      })
+
+      core.setOutput('result', resultOuput)
+    } else {
+      core.setOutput('result', btoa(JSON.stringify(result)))
+    }
   }
 }
 

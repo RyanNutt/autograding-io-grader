@@ -47,6 +47,10 @@ inputs:
     description: "Should multiple spaces be squashed before comparison?"
     default: "true"
     required: false
+  output-format:
+    description: "The format of the output. Supported values: `json`, `text`."
+    default: "json"
+    required: false
 outputs:
   result:
     description: "Outputs the result of the grader, indicating the success or failure of the test."
