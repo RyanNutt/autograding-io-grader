@@ -197,17 +197,17 @@ function run() {
     console.log(result)
 
     if (inputs.outputFormat.toLowerCase() === 'text') {
-      let resultOuput = 'Submission Results:\n\n';
+      let resultOutput = 'Submission Results:\n\n';
 
       result.tests.forEach((test) => {
-        resultOuput += `Test: ${test.name}\n`
-        resultOuput += `Status: `
+        resultOutput += `Test: ${test.name}\n`
+        resultOutput += `Status: `
         if (test.status === 'error') {
-          resultOuput += '💥 Error\n\n'
+          resultOutput += '💥 Error\n\n'
         } else if (test.status === 'fail') {
-          resultOuput += '❌ Fail\n\n'
+          resultOutput += '❌ Fail\n\n'
         } else if (test.status === 'pass') {
-          resultOuput += '👍 Pass\n\n'
+          resultOutput += '👍 Pass\n\n'
         }
 
         resultOutput += 'Execution Time: ' + test.execution_time + '\n'
@@ -229,7 +229,7 @@ function run() {
 
       })
 
-      core.setOutput('result', resultOuput)
+      core.setOutput('result', resultOutput)
     } else {
       core.setOutput('result', btoa(JSON.stringify(result)))
     }
@@ -252,17 +252,17 @@ function run() {
     }
 
     if (inputs.outputFormat.toLowerCase() === 'text') {
-      let resultOuput = 'Submission Results:\n\n';
+      let resultOutput = 'Submission Results:\n\n';
 
       result.tests.forEach((test) => {
-        resultOuput += `Test: ${test.name}\n`
-        resultOuput += `Status: `
+        resultOutput += `Test: ${test.name}\n`
+        resultOutput += `Status: `
         if (test.status === 'error') {
-          resultOuput += '💥 Error\n\n'
+          resultOutput += '💥 Error\n\n'
         } else if (test.status === 'fail') {
-          resultOuput += '❌ Fail\n\n'
+          resultOutput += '❌ Fail\n\n'
         } else if (test.status === 'pass') {
-          resultOuput += '👍 Pass\n\n'
+          resultOutput += '👍 Pass\n\n'
         }
 
         resultOutput += 'Execution Time: ' + test.execution_time + '\n'
@@ -284,7 +284,7 @@ function run() {
 
       })
 
-      core.setOutput('result', resultOuput)
+      core.setOutput('result', resultOutput)
     } else {
       core.setOutput('result', btoa(JSON.stringify(result)))
     }
