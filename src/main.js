@@ -29,11 +29,11 @@ function getInputs() {
   const maxScore = parseInt(core.getInput('max-score') || 0)
 
   const looseOptions = {
-    trim: ['1', 'true', 'yes'].includes(core.getInput('loose-trim').toLower()),
-    lTrim: ['1', 'true', 'yes'].includes(core.getInput('loose-ltrim').toLower()),
-    rTrim: ['1', 'true', 'yes'].includes(core.getInput('loose-rtrim').toLower()),
-    ignoreBlank: ['1', 'true', 'yes'].includes(core.getInput('loose-ignore-blank-lines').toLower()),
-    squashSpaces: ['1', 'true', 'yes'].includes(core.getInput('loose-squash-spaces').toLower()),
+    trim: ['1', 'true', 'yes'].includes(core.getInput('loose-trim').toLowerCase()),
+    lTrim: ['1', 'true', 'yes'].includes(core.getInput('loose-ltrim').toLowerCase()),
+    rTrim: ['1', 'true', 'yes'].includes(core.getInput('loose-rtrim').toLowerCase()),
+    ignoreBlank: ['1', 'true', 'yes'].includes(core.getInput('loose-ignore-blank-lines').toLowerCase()),
+    squashSpaces: ['1', 'true', 'yes'].includes(core.getInput('loose-squash-spaces').toLowerCase()),
   }
 
   if (!['exact', 'contains', 'regex', 'loose'].includes(comparisonMethod)) {
