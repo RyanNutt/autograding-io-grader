@@ -1,4 +1,4 @@
-const {execSync} = require('child_process')
+const { execSync } = require('child_process')
 const core = require('@actions/core')
 
 const env = {
@@ -28,7 +28,15 @@ function getInputs() {
 
   const maxScore = parseInt(core.getInput('max-score') || 0)
 
-  if (!['exact', 'contains', 'regex'].includes(comparisonMethod)) {
+  const looseOptions = {
+    trim: ['1', 'true', 'yes'].includes(core.getInput('loose-trim').toLower()),
+    lTrim: ['1', 'true', 'yes'].includes(core.getInput('loose-ltrim').toLower()),
+    rTrim: ['1', 'true', 'yes'].includes(core.getInput('loose-rtrim').toLower()),
+    ignoreBlank: ['1', 'true', 'yes'].includes(core.getInput('loose-ignore-blank-lines').toLower()),
+    squashSpaces: ['1', 'true', 'yes'].includes(core.getInput('loose-squash-spaces').toLower()),
+  }
+
+  if (!['exact', 'contains', 'regex', 'loose'].includes(comparisonMethod)) {
     throw new Error(`Invalid comparison method: ${comparisonMethod}`)
   }
 
@@ -45,6 +53,7 @@ function getInputs() {
     comparisonMethod,
     timeout,
     maxScore,
+    looseOptions,
   }
 }
 
@@ -78,9 +87,50 @@ function compareOutput(output, expected, method) {
       const regex = new RegExp(expected)
       return regex.test(output)
     }
+    case 'loose':
+      return compareLoose(output, expected)
     default:
       throw new Error(`Invalid comparison method: ${method}`)
   }
+}
+
+function compareLoose(output, expected) {
+  let inputs = {};
+  inputs = getInputs();
+
+  let { trim, lTrim, rTrim, ignoreBlank, squashSpaces } = inputs.looseOptions
+
+  let outputLines = output.split('\r?\n')
+  let expectedLines = expected.split('\r?\n')
+
+  if (trim || rTrim) {
+    outputLines = outputLines.map((line) => line.trimEnd())
+    expectedLines = expectedLines.map((line) => line.trimEnd())
+  }
+  if (trim || lTrim) {
+    outputLines = outputLines.map((line) => line.trimStart())
+    expectedLines = expectedLines.map((line) => line.trimStart())
+  }
+  if (ignoreBlank) {
+    outputLines = outputLines.filter((line) => line.trim() !== '')
+    expectedLines = expectedLines.filter((line) => line.trim() !== '')
+  }
+  if (squashSpaces) {
+    outputLines = outputLines.map((line) => line.replace(/\s+/g, ' '))
+    expectedLines = expectedLines.map((line) => line.replace(/\s+/g, ' '))
+  }
+
+  if (outputLines.length !== expectedLines.length) {
+    return false
+  }
+
+  for (let i = 0; i < outputLines.length; i++) {
+    if (outputLines[i] !== expectedLines[i]) {
+      return false
+    }
+  }
+
+  return true
 }
 
 function run() {
@@ -98,7 +148,7 @@ function run() {
     }
 
     const startTime = new Date()
-    const {output, error} = executeTest(inputs.command, inputs.input, inputs.timeout)
+    const { output, error } = executeTest(inputs.command, inputs.input, inputs.timeout)
     const endTime = new Date()
 
     let status = 'pass'
