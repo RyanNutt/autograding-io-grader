@@ -36,6 +36,8 @@ function getInputs() {
     squashSpaces: ['1', 'true', 'yes'].includes(core.getInput('loose-squash-spaces').toLowerCase()),
   }
 
+  const outputFormat = core.getInput('output-format')
+
   if (!['exact', 'contains', 'regex', 'loose'].includes(comparisonMethod)) {
     throw new Error(`Invalid comparison method: ${comparisonMethod}`)
   }
@@ -54,6 +56,7 @@ function getInputs() {
     timeout,
     maxScore,
     looseOptions,
+    outputFormat,
   }
 }
 
@@ -210,7 +213,7 @@ function run() {
       ],
     }
 
-    if (core.getInput('output-format').toLowerCase() === 'text') {
+    if (inputs.outputFormat.toLowerCase() === 'text') {
       let resultOuput = 'Submission Results:\n\n';
 
       result.tests.forEach((test) => {
