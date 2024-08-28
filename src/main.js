@@ -194,7 +194,15 @@ function run() {
       ],
     }
 
-    console.log(result)
+    if (inputs.outputFormat === 'text') {
+      console.log('Test Results:\n');
+      console.log(`Name: ${inputs.testName}`);
+      console.log(`Status: ${status}`);
+      console.log('Score: ' + score);
+    } else {
+      console.log(result);
+    }
+
     core.setOutput('result', btoa(JSON.stringify(result)))
 
 
