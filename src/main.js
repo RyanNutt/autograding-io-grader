@@ -202,41 +202,40 @@ function run() {
       } else if (status === 'pass') {
         console.log('✅ Test Passed')
       }
-      console.log("\n")
 
-      console.log('Test Results:\n')
-      console.log('-------------\n')
+      console.log('');
+
+      console.log('Test Results:')
+      console.log('-------------')
       console.log(`Name: ${inputs.testName}`)
       console.log(`Status: ${status}`)
       console.log('Score: ' + score + ' / ' + inputs.maxScore)
       console.log('Execution Time: ' + (endTime - startTime) / 1000 + 's')
 
       if (inputs.input.trim() !== '') {
+        console.log('');
         console.log('Input:')
-        console.log('______')
+        console.log('------')
         console.log(inputs.input)
       }
 
-      console.log("\n");
+      console.log('');
 
       if (status === 'fail') {
-        console.log('\n');
         console.log('Expected Output:')
         console.log('----------------')
         console.log(inputs.expectedOutput)
-        console.log('\n\n');
+        console.log('');
         console.log('Your Output:')
         console.log('------------')
         console.log(output)
       } else if (status === 'error') {
-        console.log('\n\n');
         console.log('Error Message:')
         console.log('--------------')
         console.log(error)
       } else if (status === 'pass') {
-        console.log("\n\n")
         console.log('Your Output:')
-        console.log('____________')
+        console.log('------------')
         console.log(output)
       } else {
         console.log('Unknown run status status: ' + status);
