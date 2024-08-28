@@ -195,6 +195,15 @@ function run() {
     }
 
     if (inputs.outputFormat === 'text') {
+      if (status === 'fail') {
+        console.log('❌ Test Failed')
+      } else if (status === 'error') {
+        console.log('💥 Error Executing Code')
+      } else if (status === 'pass') {
+        console.log('✅ Test Passed')
+      }
+      console.log("\n")
+
       console.log('Test Results:\n')
       console.log('-------------\n')
       console.log(`Name: ${inputs.testName}`)
@@ -211,24 +220,21 @@ function run() {
       console.log("\n");
 
       if (status === 'fail') {
-        console.log('❌ Test Failed')
         console.log('\n');
         console.log('Expected Output:')
         console.log('----------------')
         console.log(inputs.expectedOutput)
-        console.log('\n');
+        console.log('\n\n');
         console.log('Your Output:')
         console.log('------------')
         console.log(output)
       } else if (status === 'error') {
-        console.log('💥Error executing code')
-        console.log('\n');
+        console.log('\n\n');
         console.log('Error Message:')
         console.log('--------------')
         console.log(error)
       } else if (status === 'pass') {
-        console.log('✅ Test Passed')
-        console.log("\n")
+        console.log("\n\n")
         console.log('Your Output:')
         console.log('____________')
         console.log(output)
