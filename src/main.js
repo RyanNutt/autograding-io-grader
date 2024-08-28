@@ -195,10 +195,46 @@ function run() {
     }
 
     if (inputs.outputFormat === 'text') {
-      console.log('Test Results:\n');
-      console.log(`Name: ${inputs.testName}`);
-      console.log(`Status: ${status}`);
-      console.log('Score: ' + score);
+      console.log('Test Results:\n')
+      console.log('-------------\n')
+      console.log(`Name: ${inputs.testName}`)
+      console.log(`Status: ${status}`)
+      console.log('Score: ' + score + ' / ' + inputs.maxScore)
+      console.log('Execution Time: ' + (endTime - startTime) / 1000 + 's')
+
+      if (inputs.input.trim() !== '') {
+        console.log('Input:')
+        console.log('______')
+        console.log(inputs.input)
+      }
+
+      console.log("\n");
+
+      if (status === 'fail') {
+        console.log('❌ Test Failed')
+        console.log('\n');
+        console.log('Expected Output:')
+        console.log('----------------')
+        console.log(inputs.expectedOutput)
+        console.log('\n');
+        console.log('Your Output:')
+        console.log('------------')
+        console.log(output)
+      } else if (status === 'error') {
+        console.log('💥Error executing code')
+        console.log('\n');
+        console.log('Error Message:')
+        console.log('--------------')
+        console.log(error)
+      } else if (status === 'pass') {
+        console.log('✅ Test Passed')
+        console.log("\n")
+        console.log('Your Output:')
+        console.log('____________')
+        console.log(output)
+      } else {
+        console.log('Unknown run status status: ' + status);
+      }
     } else {
       console.log(result);
     }
